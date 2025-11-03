@@ -15,8 +15,20 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Ordinary Company — Coming Soon",
+  title: "Ordinary Company",
   description: "A creative agency based in Cincinnati, Ohio. Full website coming soon.",
+  openGraph: {
+    title: "Ordinary Company",
+    description: "A creative agency based in Cincinnati, Ohio. Full website coming soon.",
+    type: "website",
+    images: [{ url: "/preview.png" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ordinary Company",
+    description: "A creative agency based in Cincinnati, Ohio. Full website coming soon.",
+    images: ["/preview.png"],
+  },
 };
 
 export default function RootLayout({
