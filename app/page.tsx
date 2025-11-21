@@ -1,7 +1,9 @@
-'use client';
+"use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { MouseEvent } from "react";
+import { motion, useInView } from "framer-motion";
 
 type Star = {
   x: number;
@@ -13,9 +15,22 @@ type Star = {
   warm: boolean;
 };
 
+const ABOUT_PARAGRAPHS = [
+  "We're artists, designers, technologists, storytellers, musicians, and creatives chasing something bigger: joy, meaning, and connection.",
+  "Every project we're a part of is crafted by humans, for humans. No shortcuts. No fluff. Just the real stuff that matters.",
+  "We're Ordinary Company. And we're just getting started.",
+];
+
 export default function Home() {
   const heroRef = useRef<HTMLElement | null>(null);
+  const aboutRef = useRef<HTMLElement | null>(null);
+  const aboutTextRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const hasTypedAbout = useRef(false);
+  const isAboutTextInView = useInView(aboutTextRef, { once: true, amount: 0.4 });
+  const [typedParagraphs, setTypedParagraphs] = useState<string[]>(
+    () => ABOUT_PARAGRAPHS.map(() => "")
+  );
 
   useEffect(() => {
     const elements = Array.from(
@@ -183,6 +198,46 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isAboutTextInView || hasTypedAbout.current) {
+      return;
+    }
+
+    hasTypedAbout.current = true;
+
+    const typingSpeed = 35;
+    const paragraphDelay = 600;
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    let cumulativeDelay = 0;
+
+    ABOUT_PARAGRAPHS.forEach((text, index) => {
+      for (let i = 0; i <= text.length; i += 1) {
+        const timeout = setTimeout(() => {
+          setTypedParagraphs((prev) => {
+            const next = [...prev];
+            next[index] = text.slice(0, i);
+            return next;
+          });
+        }, cumulativeDelay + i * typingSpeed);
+        timeouts.push(timeout);
+      }
+
+      cumulativeDelay += text.length * typingSpeed + paragraphDelay;
+    });
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+    };
+  }, [isAboutTextInView, setTypedParagraphs]);
+
+  const handleScrollToAbout = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      event.preventDefault();
+      aboutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    },
+    []
+  );
+
   return (
     <>
       <section
@@ -225,14 +280,15 @@ export default function Home() {
                 />
               </div>
               <p className="animate-on-scroll mt-6 mx-auto max-w-2xl text-base text-white/80 sm:text-lg [animation:fadeSlideIn_1s_ease-out_0.3s_both]">
-                A creative agency based in Cincinnati, Ohio.
+                A Creative Studio based in Cincinnati, Ohio.
               </p>
               <div className="animate-on-scroll mt-10 flex justify-center [animation:fadeSlideIn_1s_ease-out_0.4s_both]">
                 <a
-                  href="mailto:contact.theordinarycompany@gmail.com"
+                  href="#about"
+                  onClick={handleScrollToAbout}
                   className="inline-flex items-center gap-2 rounded-full bg-white/10 px-5 py-3 text-sm font-medium text-white ring-1 ring-white/15 transition hover:bg-white/15 font-sans"
                 >
-                  Contact Us
+                  About
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -258,6 +314,60 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <motion.section
+        id="about"
+        ref={aboutRef}
+        className="relative bg-black py-40 sm:py-48"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <motion.div
+          className="mx-auto max-w-4xl px-6 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.9, ease: "easeOut", delay: 0.1 }}
+        >
+          <motion.h2
+            className="text-xs font-semibold uppercase tracking-[0.4em] text-white/60 font-sans"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.9, ease: "easeOut", delay: 0.15 }}
+          >
+            WHO WE ARE
+          </motion.h2>
+          <motion.div
+            className="relative mt-8 text-lg leading-relaxed text-white/80 font-sans"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            ref={aboutTextRef}
+            aria-live="polite"
+          >
+            <div
+              className="pointer-events-none select-none space-y-6 opacity-0"
+              aria-hidden="true"
+            >
+              {ABOUT_PARAGRAPHS.map((paragraph) => (
+                <p key={`placeholder-${paragraph}`}>{paragraph}</p>
+              ))}
+            </div>
+            <div className="absolute inset-0">
+              <div className="space-y-6">
+                {typedParagraphs.map((text, index) => (
+                  <p key={ABOUT_PARAGRAPHS[index]}>
+                    {text}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </motion.section>
       <section className="hidden relative bg-neutral-950 pt-20 pb-20">
         {/* Hidden: previous content not needed for coming soon */}
       </section>
@@ -287,9 +397,6 @@ export default function Home() {
                   priority
                 />
               </a>
-              <p className="text-sm text-white/60 font-sans">
-                A creative agency based in Cincinnati, Ohio. Full website coming soon.
-              </p>
               <div className="mt-6 flex gap-3">
                 <a
                   href="mailto:contact.theordinarycompany@gmail.com"
@@ -301,13 +408,96 @@ export default function Home() {
             </div>
             <div>
               <h3 className="mb-4 text-sm font-medium text-white font-sans">
-                Location
+                Social
               </h3>
-              <ul className="space-y-3">
+              <ul className="flex flex-wrap items-center gap-4">
                 <li>
-                  <span className="text-sm text-white/60 font-sans">
-                    Cincinnati, Ohio
-                  </span>
+                  <a
+                    href="https://www.youtube.com/@Ordinary-Company"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="YouTube"
+                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/30 hover:bg-white/10"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      className="h-5 w-5 transition group-hover:scale-105"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.12 5 12 5 12 5s-6.12 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26.2 26.2 0 0 0 2 12a26.2 26.2 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.88 19 12 19 12 19s6.12 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77 26.2 26.2 0 0 0 .4-4.8 26.2 26.2 0 0 0-.4-4.8ZM10.5 14.7V9.3L15.5 12Z"
+                      />
+                    </svg>
+                    <span className="sr-only">YouTube</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/company/ordinary-company"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="LinkedIn"
+                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/30 hover:bg-white/10"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      className="h-5 w-5 transition group-hover:scale-105"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M4.98 3.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM3 9h3.96v12H3Zm6.24 0H13v1.62h.05c.55-1.05 1.9-2.16 3.91-2.16 4.19 0 4.96 2.76 4.96 6.36V21H17v-5.28c0-1.26-.03-2.88-1.76-2.88-1.76 0-2.03 1.38-2.03 2.78V21H9.24Z"
+                      />
+                    </svg>
+                    <span className="sr-only">LinkedIn</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://ordinary-company.itch.io/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="itch.io"
+                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/30 hover:bg-white/10"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      className="h-5 w-5 transition group-hover:scale-105"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M4.5 4h15l2 4.5V18a2 2 0 0 1-2 2h-6l-1.5-1.5L10.5 20h-6a2 2 0 0 1-2-2V8.5Zm15.36 5.45L18.9 6H5.1l-1 2.45L4 12h2v6h2v-3.5a4 4 0 0 1 8 0V18h2v-6h2Zm-7.86 0a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z"
+                      />
+                    </svg>
+                    <span className="sr-only">itch.io</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.instagram.com/ordinarycompany.design/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="Instagram"
+                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/30 hover:bg-white/10"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      className="h-5 w-5 transition group-hover:scale-105"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2a2.5 2.5 0 1 0 .001 5.001A2.5 2.5 0 0 0 12 10.5Zm6-3.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                      />
+                    </svg>
+                    <span className="sr-only">Instagram</span>
+                  </a>
                 </li>
               </ul>
             </div>
