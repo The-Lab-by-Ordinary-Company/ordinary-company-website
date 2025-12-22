@@ -1,9 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { MouseEvent } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 type Star = {
   x: number;
@@ -15,22 +13,9 @@ type Star = {
   warm: boolean;
 };
 
-const ABOUT_PARAGRAPHS = [
-  "We're artists, designers, technologists, storytellers, musicians, and creatives chasing something bigger: joy, meaning, and connection.",
-  "Every project we're a part of is crafted by humans, for humans. No shortcuts. No fluff. Just the real stuff that matters.",
-  "We're Ordinary Company. And we're just getting started.",
-];
-
 export default function Home() {
   const heroRef = useRef<HTMLElement | null>(null);
-  const aboutRef = useRef<HTMLElement | null>(null);
-  const aboutTextRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const hasTypedAbout = useRef(false);
-  const isAboutTextInView = useInView(aboutTextRef, { once: true, amount: 0.4 });
-  const [typedParagraphs, setTypedParagraphs] = useState<string[]>(
-    () => ABOUT_PARAGRAPHS.map(() => "")
-  );
 
   useEffect(() => {
     const elements = Array.from(
@@ -198,52 +183,12 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!isAboutTextInView || hasTypedAbout.current) {
-      return;
-    }
-
-    hasTypedAbout.current = true;
-
-    const typingSpeed = 35;
-    const paragraphDelay = 600;
-    const timeouts: ReturnType<typeof setTimeout>[] = [];
-    let cumulativeDelay = 0;
-
-    ABOUT_PARAGRAPHS.forEach((text, index) => {
-      for (let i = 0; i <= text.length; i += 1) {
-        const timeout = setTimeout(() => {
-          setTypedParagraphs((prev) => {
-            const next = [...prev];
-            next[index] = text.slice(0, i);
-            return next;
-          });
-        }, cumulativeDelay + i * typingSpeed);
-        timeouts.push(timeout);
-      }
-
-      cumulativeDelay += text.length * typingSpeed + paragraphDelay;
-    });
-
-    return () => {
-      timeouts.forEach(clearTimeout);
-    };
-  }, [isAboutTextInView, setTypedParagraphs]);
-
-  const handleScrollToAbout = useCallback(
-    (event: MouseEvent<HTMLAnchorElement>) => {
-      event.preventDefault();
-      aboutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    },
-    []
-  );
-
   return (
     <>
       <section
         id="hero"
         ref={heroRef}
-        className="relative isolate flex min-h-screen flex-col overflow-hidden"
+        className="relative isolate flex h-screen flex-col overflow-hidden"
       >
         <div className="absolute inset-0 bg-neutral-950" />
         <canvas
@@ -260,12 +205,9 @@ export default function Home() {
         <div className="relative z-10 flex flex-1 items-center">
           <div className="mx-auto w-full max-w-7xl px-6 py-20 sm:py-24">
             <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-6 inline-flex items-center gap-3 rounded-full bg-white/10 px-2.5 py-2 ring-1 ring-white/15 backdrop-blur animate-on-scroll [animation:fadeSlideIn_1s_ease-out_0.1s_both]">
-                <span className="inline-flex items-center rounded-full bg-white/90 pt-0.5 pr-2 pb-0.5 pl-2 text-xs font-medium text-neutral-900 font-sans">
-                  Coming Soon
-                </span>
+              <div className="mb-6 inline-flex items-center rounded-full bg-white/10 px-4 py-2 ring-1 ring-white/15 backdrop-blur animate-on-scroll [animation:fadeSlideIn_1s_ease-out_0.1s_both]">
                 <span className="text-sm font-medium text-white/90 font-sans">
-                  Full website launching soon
+                  Full Site Coming Soon
                 </span>
               </div>
               <div className="animate-on-scroll flex justify-center [animation:fadeSlideIn_1s_ease-out_0.2s_both]">
@@ -279,244 +221,99 @@ export default function Home() {
                   sizes="(min-width: 1024px) 600px, (min-width: 768px) 480px, (min-width: 640px) 400px, 300px"
                 />
               </div>
-              <p className="animate-on-scroll mt-6 mx-auto max-w-2xl text-base text-white/80 sm:text-lg [animation:fadeSlideIn_1s_ease-out_0.3s_both]">
-                A Creative Studio based in Cincinnati, Ohio.
-              </p>
-              <div className="animate-on-scroll mt-10 flex justify-center [animation:fadeSlideIn_1s_ease-out_0.4s_both]">
+              <div className="animate-on-scroll mt-8 flex justify-center gap-4 [animation:fadeSlideIn_1s_ease-out_0.3s_both]">
                 <a
-                  href="#about"
-                  onClick={handleScrollToAbout}
-                  className="inline-flex items-center gap-2 rounded-full bg-white/10 px-5 py-3 text-sm font-medium text-white ring-1 ring-white/15 transition hover:bg-white/15 font-sans"
+                  href="https://www.youtube.com/@Ordinary-Company"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="YouTube"
+                  className="social-icon-cyber group inline-flex h-12 w-12 items-center justify-center rounded-sm border border-white/20 bg-white/5 text-white"
                 >
-                  About
+                  <span className="cyber-tooltip">YouTube</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
                     viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    data-lucide="arrow-right"
-                    className="lucide lucide-arrow-right h-4 w-4"
+                    className="h-6 w-6"
+                    aria-hidden="true"
                   >
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
+                    <path
+                      fill="currentColor"
+                      d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.12 5 12 5 12 5s-6.12 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26.2 26.2 0 0 0 2 12a26.2 26.2 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.88 19 12 19 12 19s6.12 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77 26.2 26.2 0 0 0 .4-4.8 26.2 26.2 0 0 0-.4-4.8ZM10.5 14.7V9.3L15.5 12Z"
+                    />
                   </svg>
+                  <span className="sr-only">YouTube</span>
                 </a>
-              </div>
-            </div>
-            <div className="hidden mx-auto mt-20 max-w-5xl">
-              {/* Partners hidden for coming soon */}
-            </div>
-          </div>
-        </div>
-      </section>
-      <motion.section
-        id="about"
-        ref={aboutRef}
-        className="relative bg-black py-40 sm:py-48"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <motion.div
-          className="mx-auto max-w-4xl px-6 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.9, ease: "easeOut", delay: 0.1 }}
-        >
-          <motion.h2
-            className="text-xs font-semibold uppercase tracking-[0.4em] text-white/60 font-sans"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.9, ease: "easeOut", delay: 0.15 }}
-          >
-            WHO WE ARE
-          </motion.h2>
-          <motion.div
-            className="relative mt-8 text-lg leading-relaxed text-white/80 font-sans"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            ref={aboutTextRef}
-            aria-live="polite"
-          >
-            <div
-              className="pointer-events-none select-none space-y-6 opacity-0"
-              aria-hidden="true"
-            >
-              {ABOUT_PARAGRAPHS.map((paragraph) => (
-                <p key={`placeholder-${paragraph}`}>{paragraph}</p>
-              ))}
-            </div>
-            <div className="absolute inset-0">
-              <div className="space-y-6">
-                {typedParagraphs.map((text, index) => (
-                  <p key={ABOUT_PARAGRAPHS[index]}>
-                    {text}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </motion.section>
-      <section className="hidden relative bg-neutral-950 pt-20 pb-20">
-        {/* Hidden: previous content not needed for coming soon */}
-      </section>
-      <section className="hidden relative bg-neutral-900/30 py-20">
-        {/* Hidden: previous content not needed for coming soon */}
-      </section>
-      <section className="hidden relative bg-neutral-900/30 py-20">
-        {/* Hidden: previous content not needed for coming soon */}
-      </section>
-      <section className="hidden relative bg-neutral-950 py-20">
-        {/* Hidden: previous content not needed for coming soon */}
-      </section>
-      <section className="hidden relative bg-neutral-900/50 py-20">
-        {/* Hidden: previous content not needed for coming soon */}
-      </section>
-      <footer className="relative border-t border-white/10 bg-neutral-950 pt-16 pb-8">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-4">
-            <div className="col-span-1 md:col-span-1">
-              <a href="#" className="mb-4 inline-flex">
-                <Image
-                  src="/logo_w.png"
-                  alt="Ordinary Company"
-                  width={1099}
-                  height={531}
-                  className="h-12 w-auto"
-                  priority
-                />
-              </a>
-              <div className="mt-6 flex gap-3">
                 <a
-                  href="mailto:contact.theordinarycompany@gmail.com"
-                  className="inline-flex h-9 items-center justify-center rounded-full border border-white/10 bg-white px-4 text-sm font-medium text-neutral-900 transition hover:bg-white/90 font-sans"
+                  href="https://www.linkedin.com/company/ordinary-company"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="LinkedIn"
+                  className="social-icon-cyber group inline-flex h-12 w-12 items-center justify-center rounded-sm border border-white/20 bg-white/5 text-white"
                 >
-                  Contact Us
+                  <span className="cyber-tooltip">LinkedIn</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M4.98 3.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM3 9h3.96v12H3Zm6.24 0H13v1.62h.05c.55-1.05 1.9-2.16 3.91-2.16 4.19 0 4.96 2.76 4.96 6.36V21H17v-5.28c0-1.26-.03-2.88-1.76-2.88-1.76 0-2.03 1.38-2.03 2.78V21H9.24Z"
+                    />
+                  </svg>
+                  <span className="sr-only">LinkedIn</span>
+                </a>
+                <a
+                  href="https://ordinary-company.itch.io/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="itch.io"
+                  className="social-icon-cyber group inline-flex h-12 w-12 items-center justify-center rounded-sm border border-white/20 bg-white/5 text-white"
+                >
+                  <span className="cyber-tooltip">itch.io</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 245.37069 220.73612"
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M31.99 1.365C21.287 7.72.2 31.945 0 38.298v10.516C0 62.144 12.46 73.86 23.773 73.86c13.584 0 24.902-11.258 24.903-24.62 0 13.362 10.93 24.62 24.515 24.62 13.586 0 24.165-11.258 24.165-24.62 0 13.362 11.622 24.62 25.207 24.62h.246c13.586 0 25.208-11.258 25.208-24.62 0 13.362 10.58 24.62 24.164 24.62 13.585 0 24.515-11.258 24.515-24.62 0 13.362 11.32 24.62 24.903 24.62 11.313 0 23.773-11.714 23.773-25.046V38.298c-.2-6.354-21.287-30.58-31.988-36.933C180.118.197 157.056-.005 122.685 0c-34.37.003-81.228.54-90.697 1.365zm65.194 66.217a28.025 28.025 0 0 1-4.78 6.155c-5.128 5.014-12.157 8.122-19.906 8.122a28.482 28.482 0 0 1-19.948-8.126c-1.858-1.82-3.27-3.766-4.563-6.032l-.006.004c-1.292 2.27-3.092 4.215-4.954 6.037a28.5 28.5 0 0 1-19.948 8.12c-.934 0-1.906-.258-2.692-.528-1.092 11.372-1.553 22.24-1.716 30.164l-.002.045c-.02 4.024-.04 7.333-.06 11.93.21 23.86-2.363 77.334 10.52 90.473 19.964 4.655 56.7 6.775 93.555 6.788h.006c36.854-.013 73.59-2.133 93.554-6.788 12.883-13.14 10.31-66.614 10.52-90.474-.022-4.596-.04-7.905-.06-11.93l-.003-.045c-.162-7.926-.623-18.793-1.715-30.165-.786.27-1.757.528-2.692.528a28.5 28.5 0 0 1-19.948-8.12c-1.862-1.822-3.662-3.766-4.955-6.037l-.006-.004c-1.294 2.266-2.705 4.213-4.563 6.032a28.48 28.48 0 0 1-19.947 8.125c-7.748 0-14.778-3.11-19.906-8.123a28.025 28.025 0 0 1-4.78-6.155 27.99 27.99 0 0 1-4.736 6.155 28.49 28.49 0 0 1-19.95 8.124c-.27 0-.54-.012-.81-.02h-.007c-.27.008-.54.02-.813.02a28.49 28.49 0 0 1-19.95-8.123 27.992 27.992 0 0 1-4.736-6.155zm-20.486 26.49l-.002.01h.015c8.113.017 15.32 0 24.25 9.746 7.028-.737 14.372-1.105 21.722-1.094h.006c7.35-.01 14.694.357 21.723 1.094 8.93-9.747 16.137-9.73 24.25-9.746h.014l-.002-.01c3.833 0 19.166 0 29.85 30.007L210 165.244c8.504 30.624-2.723 31.373-16.727 31.4-20.768-.773-32.267-15.855-32.267-30.935-11.496 1.884-24.907 2.826-38.318 2.827h-.006c-13.412 0-26.823-.943-38.318-2.827 0 15.08-11.5 30.162-32.267 30.935-14.004-.027-25.23-.775-16.726-31.4L46.85 124.08c10.684-30.007 26.017-30.007 29.85-30.007zm45.985 23.582v.006c-.02.02-21.863 20.08-25.79 27.215l14.304-.573v12.474c0 .584 5.74.346 11.486.08h.006c5.744.266 11.485.504 11.485-.08v-12.474l14.304.573c-3.928-7.135-25.79-27.215-25.79-27.215v-.006l-.003.002z"
+                    />
+                  </svg>
+                  <span className="sr-only">itch.io</span>
+                </a>
+                <a
+                  href="https://www.instagram.com/ordinarycompany.design/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="Instagram"
+                  className="social-icon-cyber group inline-flex h-12 w-12 items-center justify-center rounded-sm border border-white/20 bg-white/5 text-white"
+                >
+                  <span className="cyber-tooltip">Instagram</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2a2.5 2.5 0 1 0 .001 5.001A2.5 2.5 0 0 0 12 10.5Zm6-3.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                    />
+                  </svg>
+                  <span className="sr-only">Instagram</span>
                 </a>
               </div>
             </div>
-            <div>
-              <h3 className="mb-4 text-sm font-medium text-white font-sans">
-                Social
-              </h3>
-              <ul className="flex flex-wrap items-center gap-4">
-                <li>
-                  <a
-                    href="https://www.youtube.com/@Ordinary-Company"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    aria-label="YouTube"
-                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/30 hover:bg-white/10"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      className="h-5 w-5 transition group-hover:scale-105"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.12 5 12 5 12 5s-6.12 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26.2 26.2 0 0 0 2 12a26.2 26.2 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.88 19 12 19 12 19s6.12 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77 26.2 26.2 0 0 0 .4-4.8 26.2 26.2 0 0 0-.4-4.8ZM10.5 14.7V9.3L15.5 12Z"
-                      />
-                    </svg>
-                    <span className="sr-only">YouTube</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/company/ordinary-company"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    aria-label="LinkedIn"
-                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/30 hover:bg-white/10"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      className="h-5 w-5 transition group-hover:scale-105"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M4.98 3.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM3 9h3.96v12H3Zm6.24 0H13v1.62h.05c.55-1.05 1.9-2.16 3.91-2.16 4.19 0 4.96 2.76 4.96 6.36V21H17v-5.28c0-1.26-.03-2.88-1.76-2.88-1.76 0-2.03 1.38-2.03 2.78V21H9.24Z"
-                      />
-                    </svg>
-                    <span className="sr-only">LinkedIn</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://ordinary-company.itch.io/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    aria-label="itch.io"
-                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/30 hover:bg-white/10"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      className="h-5 w-5 transition group-hover:scale-105"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M4.5 4h15l2 4.5V18a2 2 0 0 1-2 2h-6l-1.5-1.5L10.5 20h-6a2 2 0 0 1-2-2V8.5Zm15.36 5.45L18.9 6H5.1l-1 2.45L4 12h2v6h2v-3.5a4 4 0 0 1 8 0V18h2v-6h2Zm-7.86 0a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z"
-                      />
-                    </svg>
-                    <span className="sr-only">itch.io</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.instagram.com/ordinarycompany.design/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    aria-label="Instagram"
-                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/30 hover:bg-white/10"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      className="h-5 w-5 transition group-hover:scale-105"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2a2.5 2.5 0 1 0 .001 5.001A2.5 2.5 0 0 0 12 10.5Zm6-3.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                      />
-                    </svg>
-                    <span className="sr-only">Instagram</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 md:flex-row">
-            <p className="text-sm text-white/60 font-sans">
-              © 2025 Ordinary Company Group LLC. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              <a
-                href="mailto:contact.theordinarycompany@gmail.com"
-                className="text-sm text-white/60 transition hover:text-white font-sans"
-              >
-                Contact
-              </a>
-            </div>
           </div>
         </div>
-      </footer>
+        <p className="absolute bottom-6 left-0 right-0 z-10 text-center text-xs text-white/40 font-sans">
+          © 2025 Ordinary Company Group LLC. All rights reserved.
+        </p>
+      </section>
     </>
   );
 }
