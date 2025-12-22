@@ -60,3 +60,157 @@ body {
 .animate-on-scroll.animate {
   animation-play-state: running !important;
 }
+
+/* Cyberpunk Social Icons */
+@keyframes glitch {
+  0%, 100% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+  10% {
+    transform: translate(-2px, 1px);
+  }
+  20% {
+    transform: translate(2px, -1px);
+    filter: hue-rotate(90deg);
+  }
+  30% {
+    transform: translate(-1px, -1px);
+  }
+  40% {
+    transform: translate(1px, 2px);
+    filter: hue-rotate(-90deg);
+  }
+  50% {
+    transform: translate(-1px, 1px);
+  }
+  60% {
+    transform: translate(2px, 1px);
+    filter: hue-rotate(180deg);
+  }
+  70% {
+    transform: translate(-2px, -1px);
+  }
+  80% {
+    transform: translate(1px, -2px);
+  }
+  90% {
+    transform: translate(-1px, 2px);
+  }
+}
+
+@keyframes glitch-skew {
+  0%, 100% {
+    transform: skew(0deg);
+  }
+  20% {
+    transform: skew(-2deg);
+  }
+  40% {
+    transform: skew(1deg);
+  }
+  60% {
+    transform: skew(-1deg);
+  }
+  80% {
+    transform: skew(2deg);
+  }
+}
+
+@keyframes tooltip-glitch-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px) skew(-5deg);
+    clip-path: inset(0 100% 0 0);
+  }
+  50% {
+    clip-path: inset(0 0 0 0);
+    transform: translateX(-50%) translateY(0) skew(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) skew(0deg);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.social-icon-cyber {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.social-icon-cyber::before,
+.social-icon-cyber::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.social-icon-cyber::before {
+  border-color: #0ff;
+  transform: translate(-2px, -1px);
+}
+
+.social-icon-cyber::after {
+  border-color: #f0f;
+  transform: translate(2px, 1px);
+}
+
+.social-icon-cyber:hover::before,
+.social-icon-cyber:hover::after {
+  opacity: 0.6;
+}
+
+.social-icon-cyber:hover {
+  animation: glitch 0.3s ease infinite;
+  box-shadow:
+    0 0 10px rgba(0, 255, 255, 0.3),
+    0 0 20px rgba(255, 0, 255, 0.2),
+    inset 0 0 10px rgba(0, 255, 255, 0.1);
+}
+
+.social-icon-cyber:hover svg {
+  animation: glitch-skew 0.2s ease infinite;
+}
+
+/* Tooltip styles */
+.cyber-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(0, 255, 255, 0.5);
+  color: #0ff;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow:
+    0 0 10px rgba(0, 255, 255, 0.3),
+    inset 0 0 20px rgba(0, 255, 255, 0.05);
+}
+
+.cyber-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(0, 255, 255, 0.5);
+}
+
+.social-icon-cyber:hover .cyber-tooltip {
+  opacity: 1;
+  animation: tooltip-glitch-in 0.25s ease forwards;
+}
