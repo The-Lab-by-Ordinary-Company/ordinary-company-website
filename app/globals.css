@@ -120,7 +120,7 @@ body {
 @keyframes tooltip-glitch-in {
   0% {
     opacity: 0;
-    transform: translateX(-50%) translateY(4px) skew(-5deg);
+    transform: translateX(-50%) translateY(-4px) skew(-5deg);
     clip-path: inset(0 100% 0 0);
   }
   50% {
@@ -180,10 +180,10 @@ body {
 /* Tooltip styles */
 .cyber-tooltip {
   position: absolute;
-  bottom: 100%;
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-bottom: 8px;
+  margin-top: 8px;
   padding: 6px 12px;
   background: rgba(0, 0, 0, 0.9);
   border: 1px solid rgba(0, 255, 255, 0.5);
@@ -198,16 +198,17 @@ body {
   box-shadow:
     0 0 10px rgba(0, 255, 255, 0.3),
     inset 0 0 20px rgba(0, 255, 255, 0.05);
+  z-index: 50;
 }
 
-.cyber-tooltip::after {
+.cyber-tooltip::before {
   content: '';
   position: absolute;
-  top: 100%;
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
   border: 5px solid transparent;
-  border-top-color: rgba(0, 255, 255, 0.5);
+  border-bottom-color: rgba(0, 255, 255, 0.5);
 }
 
 .social-icon-cyber:hover .cyber-tooltip {
