@@ -4,10 +4,12 @@ import { SideRailNav } from "./components/SideRailNav";
 import { ProfileSection } from "./components/ProfileSection";
 import { WorkSection } from "./components/WorkSection";
 import { FooterSection } from "./components/FooterSection";
+import { LogoLoader } from "./components/LogoLoader";
 
 export default function LabPage() {
   return (
     <>
+      <LogoLoader duration={3000} />
       <ThreeBackground />
       <SideRailNav />
       <HeroSection />
