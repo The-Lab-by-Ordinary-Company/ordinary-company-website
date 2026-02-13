@@ -1,0 +1,435 @@
+/* Logo Loader Styles */
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.logo-wrapper {
+  position: relative;
+  width: min(80vw, 500px);
+  height: auto;
+  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.15));
+}
+
+.logo-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.logo-path {
+  fill: black;
+  opacity: 0;
+  transform-origin: center;
+}
+
+/* Japanese text and bottom English text - black */
+.path-text-1,
+.path-text-2,
+.path-text-3,
+.path-bottom-text {
+  fill: black !important;
+}
+
+/* Face elements and decorative letters/numbers - white */
+.path-inner-1,
+.path-inner-2,
+.path-inner-3,
+.path-deco-1,
+.path-deco-2,
+.path-deco-3,
+.path-deco-4,
+.path-deco-5,
+.path-deco-6,
+.path-deco-7,
+.path-deco-8,
+.path-deco-9,
+.path-deco-10,
+.path-deco-11,
+.path-deco-12,
+.path-deco-13,
+.path-deco-14 {
+  fill: white !important;
+}
+
+/* Left wing - dramatic fly in from left with rotation */
+.path-left-wing {
+  animation: flyInLeft 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.1s;
+}
+
+@keyframes flyInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-200px) translateY(-100px) rotate(-45deg) scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(20px) translateY(-10px) rotate(5deg) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+/* Right wing - dramatic fly in from right with rotation */
+.path-right-wing {
+  animation: flyInRight 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+@keyframes flyInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(200px) translateY(-100px) rotate(45deg) scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-20px) translateY(-10px) rotate(-5deg) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+/* Center bar - drops in with bounce */
+.path-center {
+  animation: dropIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  animation-delay: 0.6s;
+}
+
+@keyframes dropIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-150px) scaleX(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(20px) scaleX(1.1);
+  }
+  70% {
+    transform: translateY(-10px) scaleX(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scaleX(1);
+  }
+}
+
+/* Bottom left - bounces up */
+.path-bottom-left {
+  animation: bounceUp 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  animation-delay: 0.8s;
+}
+
+@keyframes bounceUp {
+  0% {
+    opacity: 0;
+    transform: translateY(80px) scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-15px) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Bottom right - bounces up */
+.path-bottom-right {
+  animation: bounceUp 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  animation-delay: 0.9s;
+}
+
+/* Text elements - scale in with fade */
+.path-text-1 {
+  animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 1s;
+}
+
+.path-text-2 {
+  animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 1.1s;
+}
+
+.path-text-3 {
+  animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 1.2s;
+}
+
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-10deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Bottom text - typewriter effect simulation */
+.path-bottom-text {
+  animation: typeIn 0.8s ease-out forwards;
+  animation-delay: 1.3s;
+  clip-path: inset(0 100% 0 0);
+}
+
+@keyframes typeIn {
+  0% {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+/* Center emblem - dramatic scale with rotation */
+.path-emblem {
+  animation: emblemIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.4s;
+}
+
+@keyframes emblemIn {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Inner details - fade in */
+.path-inner-1,
+.path-inner-2,
+.path-inner-3,
+.path-inner-4 {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.path-inner-1 { animation-delay: 0.7s; }
+.path-inner-2 { animation-delay: 0.8s; }
+.path-inner-3 { animation-delay: 0.9s; }
+.path-inner-4 { animation-delay: 1s; }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Decorative elements - sparkle in */
+.path-deco-1 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.4s; }
+.path-deco-2 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.45s; }
+.path-deco-3 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.5s; }
+.path-deco-4 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.55s; }
+.path-deco-5 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.6s; }
+.path-deco-6 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.65s; }
+.path-deco-7 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.7s; }
+.path-deco-8 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.75s; }
+.path-deco-9 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.8s; }
+.path-deco-10 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.85s; }
+.path-deco-11 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.9s; }
+.path-deco-12 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 1.95s; }
+.path-deco-13 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 2s; }
+.path-deco-14 { animation: sparkleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 2.05s; }
+
+@keyframes sparkleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-90deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3) rotate(10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Loading bar */
+.loading-bar-container {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.loading-bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #000 0%, #333 50%, #000 100%);
+  background-size: 200% 100%;
+  animation: loadingProgress 2.5s ease-out forwards, loadingShine 1s linear infinite;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+@keyframes loadingProgress {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes loadingShine {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Sparkle effects around the logo */
+.sparkles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #000;
+  border-radius: 50%;
+  opacity: 0;
+  animation: sparkle 0.6s ease-out forwards;
+}
+
+.sparkle::before,
+.sparkle::after {
+  content: '';
+  position: absolute;
+  background: #000;
+  border-radius: 50%;
+}
+
+.sparkle::before {
+  width: 2px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sparkle::after {
+  width: 16px;
+  height: 2px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg);
+  }
+}
+
+/* Position sparkles around the logo */
+.sparkle-1 { top: 25%; left: 20%; animation-delay: 0.5s; }
+.sparkle-2 { top: 20%; left: 50%; animation-delay: 0.7s; }
+.sparkle-3 { top: 25%; right: 20%; animation-delay: 0.6s; }
+.sparkle-4 { top: 40%; left: 15%; animation-delay: 0.9s; }
+.sparkle-5 { top: 40%; right: 15%; animation-delay: 0.8s; }
+.sparkle-6 { top: 60%; left: 25%; animation-delay: 1.1s; }
+.sparkle-7 { top: 60%; right: 25%; animation-delay: 1s; }
+.sparkle-8 { top: 75%; left: 35%; animation-delay: 1.3s; }
+.sparkle-9 { top: 75%; right: 35%; animation-delay: 1.2s; }
+.sparkle-10 { top: 50%; left: 10%; animation-delay: 1.5s; }
+.sparkle-11 { top: 50%; right: 10%; animation-delay: 1.4s; }
+.sparkle-12 { top: 35%; left: 45%; animation-delay: 1.6s; }
+
+/* Flying state - background fades transparent, logo flies to hero */
+.loader-container.flying {
+  background: transparent;
+  transition: background 0.4s ease;
+  pointer-events: none;
+}
+
+.loader-container.flying .logo-wrapper {
+  filter: none;
+}
+
+.loader-fade-out {
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .logo-wrapper {
+    width: 90vw;
+  }
+
+  .loading-bar-container {
+    width: 150px;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .logo-path,
+  .loading-bar,
+  .sparkle {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .path-bottom-text {
+    clip-path: none;
+  }
+}
